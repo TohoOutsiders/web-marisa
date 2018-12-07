@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import api from '../api/v1';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 
 @Component({
@@ -14,5 +15,28 @@ import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
     HelloWorld,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  private index?: string
+  public data() {
+    return {
+      index: ''
+    }
+  }
+
+  created() {
+    this.getIndex()
+  }
+
+  private async getIndex() {
+    try {
+      let query: any = {
+        title: 'fuck'
+      }
+      const res = await api.getIndex(query)
+      console.log(res)
+    } catch(err) {
+      console.log('fuck')
+    }
+  }
+}
 </script>
