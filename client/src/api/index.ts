@@ -21,7 +21,7 @@ export default class Api {
      * 配置参数
      */
     let config: IConfig = {
-      baseURL: '127.0.0.1:3000/',
+      baseURL: 'http://reimu.ru:3456/',
       headers: {
         'cms-channel': 0
       }
