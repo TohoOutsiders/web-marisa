@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { VNodeDirective } from 'vue'
 import App from './App.vue'
 import router from './route'
 // import store from './store'
@@ -12,6 +12,14 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   Vue.config.devtools = true
 }
+
+// 自定义全局指令
+// 自动聚焦focus
+Vue.directive('focus', {
+  inserted: (el: HTMLElement, binding: VNodeDirective) => {
+    binding.value ? el.focus() : el.blur()
+  }
+})
 
 Axios.interceptors.response.use(
   _response => {

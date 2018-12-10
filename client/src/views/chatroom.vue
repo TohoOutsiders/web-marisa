@@ -40,24 +40,113 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import api from '../api/v1';
+import { Component, Vue } from 'vue-property-decorator'
+import Core from '../core'
+import api from '../api/v1'
+
+const MARISA: string = '白絲魔理沙'
+const YOU: string = 'You'
 
 @Component({
   components: {
   },
 })
-export default class Home extends Vue {
-  private index?: string
-  public data() {
-    return {
-      index: ''
-    }
+export default class chatroom extends Vue {
+  talk_list: Object[] = []
+  cmd_flag: number = 0
+
+  $refs!: {
+    talk_place: HTMLFormElement,
+    you: HTMLFormElement
   }
 
   created() {
     console.log('run at created()')
     this.getArticleList()
+  }
+
+  updated() {
+    this._scrollBottom()
+  }
+
+  private async sendMessage (event: KeyboardEvent | MouseEvent) {
+    let _content: string = await this.$refs.you.value
+    if (_content === '') return false
+    if ((<KeyboardEvent>event).keyCode === 13 || (<MouseEvent>event).button === 0) {
+      let _youTalk: Object = Core.speak(YOU, _content)
+      this.talk_list.push(_youTalk)
+      switch (this.cmd_flag) {
+        case 0:
+          this._marisaThinking(_content)
+          break
+        case 1:
+         this._teachMarisa(_content)
+          break
+      }
+      this.$refs.you.value = ''
+    }
+  }
+
+  private _marisaThinking (_content: string) {
+    switch (_content) {
+      case 'teach':
+        this.talk_list.push(Core.speak(MARISA, '要教给魔里沙什么 ..? 现在只能学习语句.. 如"问`答".. 中止教学输入 exit ..'))
+        this.cmd_flag = 1
+        break
+      case 'forget':
+        this._marisaForget()
+        break
+      case 'status':
+        this._marisaStatus()
+        break
+      default: this._marisaReply(_content)
+    }
+  }
+
+  private _marisaReply (_content: string) {
+    let answer: string = Core.reply(_content)
+    if (answer !== '') {
+      this.talk_list.push(Core.speak(MARISA, answer))
+    } else {
+      this.talk_list.push(Core.speak(MARISA, '唔嗯...不懂你在说什么呢...教教我吧~'))
+    }
+  }
+
+  private _teachMarisa (_content: string) {
+    if (_content === 'exit' || _content === 'teach' || _content === 'forget' || _content === 'status') {
+      this.talk_list.push(Core.speak(YOU, '白絲魔理沙，退出学习模式'))
+      this.cmd_flag = 0
+      return
+    }
+    let memorey = Core.teach(_content)
+    // 插入记忆
+    // end
+    this.talk_list.push(Core.speak(MARISA, '行，我知道了'))
+    this.cmd_flag = 0
+  }
+
+  private _marisaForget () {
+    let flag: Boolean = Core.forget(this.talk_list)
+    if (flag) {
+      this.talk_list.push(Core.speak(MARISA, '这句话魔理沙说错了么 ... 呜呜呜对不起 ...'))
+    } else {
+      this.talk_list.push(Core.speak(MARISA, '魔理沙这阵子不太想忘记东西的样子......'))
+    }
+  }
+
+  private _marisaStatus () {
+    // 记忆点
+    // let memorise: number =
+    // 重量
+    let weight = 0.00011
+    this.talk_list.push(Core.speak(MARISA, `目前魔理沙的脑重量是${weight} 克。如果我现在还不能理解您的意思的话，请教给我更多的知识，我会非常非常用心学习的～`))
+  }
+
+  private _scrollBottom () {
+    this.$nextTick(() => {
+      let _scrollHeight = this.$refs.talk_place['scrollHeight']
+      this.$refs.talk_place['scrollTop'] = _scrollHeight
+    })
   }
 
   private async getArticleList() {
