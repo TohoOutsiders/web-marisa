@@ -6,5 +6,9 @@ import (
 )
 
 func Configure(app *iris.Application) {
+	// Index
 	app.Get("/", Controllers.GetIndexHandler)
+
+	// Core
+	app.Post("/Add", Controllers.Add)
 }

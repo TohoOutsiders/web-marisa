@@ -19,7 +19,7 @@ func main() {
 	app.Use(logger.New())
 	app.Configure(Routes.Configure)
 
-	issue := Datasource.GetInstace().InitDataPool();
+	issue := Datasource.GetInstace().InitDataPool()
 	if !issue {
 		log.Println("Inital database pool fail")
 		os.Exit(1)
