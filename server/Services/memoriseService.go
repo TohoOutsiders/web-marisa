@@ -19,7 +19,7 @@ func AddMemory(data map[string]interface{}) bool {
 }
 
 // 读取所有记忆
-func fetchAllMemory(data map[string]interface{}) (memorise []Models.Memorise) {
+func FetchAllMemory() (memorise []Models.Memorise) {
 	var db = Datasource.GetInstace().GetMysqlDB()
 	db.Find(&memorise)
 	return
