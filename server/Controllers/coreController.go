@@ -66,6 +66,67 @@ func Add(ctx iris.Context) {
 	}
 }
 
+func Reply(ctx iris.Context) {
+	memory := Models.Memorise{}
+
+	err := ctx.ReadForm(&memory)
+	if err != nil {
+		ctx.JSON(context.Map{
+			"code": 400,
+			"data": err.Error(),
+		})
+		fmt.Errorf("Controller Reply() error: %s", err)
+	} else {
+		data := make(map[string]interface{})
+		toPpl := segment.Init().Cut(memory.Keyword)
+		memorise := Services.FetchAllMemory()
+		var answer string
+
+		if len(memorise) == 0 {
+			data["answer"] = "唔嗯...不懂你在说什么呢...教教我吧~"
+			ctx.JSON(context.Map{
+				"code": 10001,
+				"data": data,
+			})
+			goto END
+		}
+
+		for _, v := range memorise {
+			fmt.Println(v)
+			ratio := 0
+			keywords := strings.Split(v.Keyword, ",")
+			for _, keyword := range keywords {
+				for _, ppl := range toPpl {
+					if keyword == ppl {
+						ratio++
+					}
+				}
+				if float32(ratio) / float32(len(keywords)) >= 0.6 {
+					answer = v.Answer
+					goto DATA
+				}
+			}
+		}
+		if answer == "" {
+			data["answer"] = "唔嗯...不懂你在说什么呢...教教我吧~"
+			ctx.JSON(context.Map{
+				"code": 10001,
+				"data": data,
+			})
+			goto END
+		}
+		DATA:
+		temp := Services.FetchMemory(answer)
+		data["answer"] = temp.Answer
+		ctx.JSON(context.Map{
+			"code": 200,
+			"data": data,
+		})
+
+	}
+	END:
+}
+
 func Test(ctx iris.Context) {
 	all := Services.FetchAllMemory()
 	fmt.Println(reflect.TypeOf(all))

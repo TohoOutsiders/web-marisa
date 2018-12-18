@@ -5,6 +5,7 @@ import (
 	"web-marisa/server/Models"
 )
 
+// 插入记忆
 func AddMemory(data map[string]interface{}) bool {
 	var db = Datasource.GetInstace().GetMysqlDB()
 
@@ -22,5 +23,12 @@ func AddMemory(data map[string]interface{}) bool {
 func FetchAllMemory() (memorise []Models.Memorise) {
 	var db = Datasource.GetInstace().GetMysqlDB()
 	db.Find(&memorise)
+	return
+}
+
+// 读取一条记忆
+func FetchMemory(answer string) (memorise Models.Memorise) {
+	var db = Datasource.GetInstace().GetMysqlDB()
+	db.Where("answer = ?", answer).First(&memorise)
 	return
 }

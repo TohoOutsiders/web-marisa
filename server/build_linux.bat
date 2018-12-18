@@ -10,20 +10,20 @@ if exist %Dist% (
     md %Dist%
 )
 
-set GOARCH=amd64
+rem set GOARCH=amd64
 set GOOS=linux
 
 echo go build now ...
 go build
 
-@echo off
+rem @echo off
 echo copy to dist
 copy .\server %Dist%
 del .\server
 md %Dist%\Config
 xcopy .\Config\*.* %Dist%\Config
 
-cls
+rem cls
 echo build on linux ok!
-ping -n 6 127.1 >nul
+rem ping -n 6 127.1 >nul
 pause
