@@ -10,7 +10,8 @@ if exist %Dist% (
     md %Dist%
 )
 
-rem set GOARCH=amd64
+SET CGO_ENABLED=0
+set GOARCH=amd64
 set GOOS=linux
 
 echo go build now ...
@@ -22,8 +23,8 @@ copy .\server %Dist%
 del .\server
 md %Dist%\Config
 xcopy .\Config\*.* %Dist%\Config
+del %Dist%\Config\.gitkeep
 
-rem cls
+cls
 echo build on linux ok!
-rem ping -n 6 127.1 >nul
-pause
+ping -n 6 127.1 >nul
