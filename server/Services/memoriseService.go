@@ -32,3 +32,11 @@ func FetchMemory(answer string) (memorise Models.Memorise) {
 	db.Where("answer = ?", answer).First(&memorise)
 	return
 }
+
+// 删除一条记忆
+func DeleteMemoryByAnswer(answer string) bool {
+	var db = Datasource.GetInstace().GetMysqlDB()
+	db.Where("answer = ?", answer).Delete(Models.Memorise{})
+
+	return true
+}

@@ -127,6 +127,26 @@ func Reply(ctx iris.Context) {
 	END:
 }
 
+func Forget(ctx iris.Context) {
+	memory := Models.Memorise{}
+
+	err := ctx.ReadForm(&memory)
+	if err != nil {
+		ctx.JSON(context.Map{
+			"code": 400,
+			"data": err.Error(),
+		})
+		fmt.Errorf("Controller Forget() error: %s", err)
+	} else {
+		if Services.DeleteMemoryByAnswer(memory.Answer) {
+			ctx.JSON(context.Map{
+				"code": 200,
+				"data": "success",
+			})
+		}
+	}
+}
+
 func Test(ctx iris.Context) {
 	all := Services.FetchAllMemory()
 	fmt.Println(reflect.TypeOf(all))

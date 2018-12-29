@@ -2,19 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9e997e33-49d3-4aeb-a7fd-f9781b66cb12" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Config/dictionary.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/marisa/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/marisa/image/marisa.e9ecbe3e.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/marisa/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/marisa/js/app.1a9c0fec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/marisa/js/chunk-033f89b3.a63a1cc9.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/marisa/js/chunk-vendors.95b675e6.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/api/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/api/v1/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/api/v1/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/core/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/core/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/src/views/chatroom.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/views/chatroom.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/segment/segment.go" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/segment/segment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_linux.bat" beforeDir="false" afterPath="$PROJECT_DIR$/build_linux.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist_linux/Config/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist_linux/Config/config.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist_windows/Config/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist_windows/Config/config.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist_windows/server.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/coreController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/coreController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Services/memoriseService.go" beforeDir="false" afterPath="$PROJECT_DIR$/Services/memoriseService.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +26,9 @@
     <session id="-1156738224">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.1" value="3" />
+          <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="1" />
@@ -35,34 +36,34 @@
           <entry key="project.open.time.54" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="11" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="bat" value="5" />
-          <entry key="go" value="26" />
+          <entry key="bat" value="6" />
+          <entry key="go" value="27" />
           <entry key="ini" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Bat" value="5" />
-          <entry key="Go" value="26" />
+          <entry key="Bat" value="6" />
+          <entry key="Go" value="27" />
           <entry key="Ini" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="bat" value="106" />
-          <entry key="go" value="5587" />
+          <entry key="go" value="5943" />
           <entry key="ini" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Bat" value="106" />
-          <entry key="Go" value="5587" />
+          <entry key="Go" value="5943" />
           <entry key="Ini" value="17" />
         </counts>
       </usages-collector>
@@ -78,8 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Services/memoriseService.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
+            <state relative-caret-position="316">
+              <caret line="36" column="25" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="25" />
               <folding>
                 <element signature="e#18#88#0" expanded="true" />
               </folding>
@@ -87,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Controllers/coreController.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
+            <state relative-caret-position="162">
+              <caret line="150" column="36" selection-start-line="150" selection-start-column="36" selection-end-line="150" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -114,10 +115,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build_linux.bat">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
+            <state relative-caret-position="280">
               <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
             </state>
           </provider>
@@ -126,7 +127,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Middlewares/pkg/tool.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
+            <state relative-caret-position="20">
               <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
             </state>
           </provider>
@@ -135,22 +136,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Routes/routes.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+            <state relative-caret-position="340">
+              <caret line="17" column="21" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="21" />
               <folding>
                 <element signature="e#16#86#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Controllers/indexController.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
-              <folding>
-                <element signature="e#21#93#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -181,13 +170,13 @@
         <option value="$PROJECT_DIR$/Models/memory.go" />
         <option value="$PROJECT_DIR$/Middlewares/pkg/tool.go" />
         <option value="$PROJECT_DIR$/build_windows.bat" />
-        <option value="$PROJECT_DIR$/Routes/routes.go" />
-        <option value="$PROJECT_DIR$/Services/memoriseService.go" />
         <option value="$PROJECT_DIR$/Models/memorise.go" />
-        <option value="$PROJECT_DIR$/Controllers/coreController.go" />
         <option value="$PROJECT_DIR$/Middlewares/segment/segment.go" />
         <option value="$PROJECT_DIR$/../../github.com/huichen/sego/segmenter.go" />
         <option value="$PROJECT_DIR$/build_linux.bat" />
+        <option value="$PROJECT_DIR$/Services/memoriseService.go" />
+        <option value="$PROJECT_DIR$/Routes/routes.go" />
+        <option value="$PROJECT_DIR$/Controllers/coreController.go" />
       </list>
     </option>
   </component>
@@ -197,8 +186,8 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="36" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
     <option name="height" value="754" />
@@ -271,7 +260,7 @@
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../tomo_iris/restful" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -310,15 +299,14 @@
     </recent_temporary>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18154311" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22692889" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.04200323" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.46688208" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3117932" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -410,50 +398,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Services/memoriseService.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="31" column="20" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
-          <folding>
-            <element signature="e#18#88#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Middlewares/pkg/tool.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Routes/routes.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-          <folding>
-            <element signature="e#16#86#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Controllers/indexController.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
-          <folding>
-            <element signature="e#21#93#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Datasource/db.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20">
@@ -482,17 +426,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controllers/coreController.go">
+    <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
+        <state relative-caret-position="220">
+          <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../tomo_iris/restful/Model/article.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controllers/indexController.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
+          <folding>
+            <element signature="e#21#93#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build_linux.bat">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
+        <state relative-caret-position="280">
           <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Middlewares/pkg/tool.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Services/memoriseService.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="36" column="25" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="25" />
+          <folding>
+            <element signature="e#18#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Routes/routes.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="17" column="21" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="21" />
+          <folding>
+            <element signature="e#16#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controllers/coreController.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="150" column="36" selection-start-line="150" selection-start-column="36" selection-end-line="150" selection-end-column="36" />
         </state>
       </provider>
     </entry>

@@ -15,4 +15,5 @@ func Configure(app *iris.Application) {
 	// Core
 	app.Post("/Add", Controllers.Add)
 	app.Post("/Reply", Controllers.Reply)
+	app.Post("/Forget", Controllers.Forget)
 }
