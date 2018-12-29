@@ -61,7 +61,25 @@ export default class Core {
    * 记忆消除中枢
    * @param {Object[]} list
    */
-  public static forget (list: Object[]) : Boolean {
-    return false
+  public static async forget (list: any[]) : Promise<any> {
+    let len: number = list.length
+    let answer: string = list[1].content
+
+    if (len > 3)  answer = list[len - 2].content
+
+
+    let config = {
+      answer: answer
+    }
+
+    try {
+      let res = await Api.DeleteMemoryByAnswer(config)
+      if (res.data.code === 200 && res.data.data === 'success') {
+        return true
+      }
+    } catch (err) {
+      console.log(`无法忘记 ... ${err}`)
+      return false
+    }
   }
 }

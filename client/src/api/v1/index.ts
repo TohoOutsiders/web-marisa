@@ -16,4 +16,9 @@ export default class V1 {
     let path = 'Reply'
     return api.axios(path, config)
   }
+
+  public static DeleteMemoryByAnswer(config: any) {
+    let path = 'Forget'
+    return api.axios(path, config)
+  }
 }

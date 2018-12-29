@@ -131,8 +131,8 @@ export default class chatroom extends Vue {
     this.cmd_flag = 0
   }
 
-  private _marisaForget () {
-    let flag: Boolean = Core.forget(this.talk_list)
+  private async _marisaForget () {
+    let flag: Boolean = await Core.forget(this.talk_list)
     if (flag) {
       this.talk_list.push(Core.speak(MARISA, '这句话魔理沙说错了么 ... 呜呜呜对不起 ...'))
     } else {
