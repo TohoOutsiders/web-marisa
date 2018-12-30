@@ -24,13 +24,13 @@
             <span class="marisa-cmd">teach</span>&nbsp;进入内容教学模式
           </span>
           <span class="system-cmd cmd-collect">
-            <span class="marisa-cmd"><del>forget</del></span>&nbsp;忘记最后所说的内容
+            <span class="marisa-cmd">forget</span>&nbsp;忘记最后所说的内容
           </span>
           <span class="system-cmd cmd-collect">
             <del><span class="marisa-cmd">application</span>&nbsp;管理外部应用接口</del>
           </span>
           <span class="system-cmd cmd-collect">
-            <span class="marisa-cmd"><del>status</del></span>&nbsp;查看目前知识所掌握情况
+            <span class="marisa-cmd">status</span>&nbsp;查看目前知识所掌握情况
           </span>
           <div class="cmd_desc">
             另外你也可以通过输入
@@ -94,7 +94,7 @@ export default class chatroom extends Vue {
   private _marisaThinking (_content: string) {
     switch (_content) {
       case 'teach':
-        this.talk_list.push(Core.speak(MARISA, '要教给魔里沙什么 ..? 现在只能学习语句.. 如"问`答".. 中止教学输入 exit ..'))
+        this.talk_list.push(Core.speak(MARISA, '要教给魔里沙什么 . .? 现在只能学习语句.. 如"问`答". . 中止教学输入 exit . .'))
         this.cmd_flag = 1
         break
       case 'forget':
@@ -126,7 +126,7 @@ export default class chatroom extends Vue {
     if (memorey) {
       this.talk_list.push(Core.speak(MARISA, '行，我知道了'))
     } else {
-      this.talk_list.push(Core.speak(MARISA, '魔理沙不想记住......对不起'))
+      this.talk_list.push(Core.speak(MARISA, '魔理沙不想记住 . . . . . . 对不起'))
     }
     this.cmd_flag = 0
   }
@@ -134,19 +134,20 @@ export default class chatroom extends Vue {
   private async _marisaForget () {
     let flag: Boolean = await Core.forget(this.talk_list)
     if (flag) {
-      this.talk_list.push(Core.speak(MARISA, '这句话魔理沙说错了么 ... 呜呜呜对不起 ...'))
+      this.talk_list.push(Core.speak(MARISA, '这句话魔理沙说错了么 . . . 呜呜呜对不起 . . .'))
     } else {
-      this.talk_list.push(Core.speak(MARISA, '魔理沙这阵子不太想忘记东西的样子......'))
+      this.talk_list.push(Core.speak(MARISA, '魔理沙这阵子不太想忘记东西的样子 . . . . . .'))
     }
   }
 
-  private _marisaStatus () {
-    // 记忆点
-    // let memorise: number =
-    // 重量
-    let weight = 0.00011
-    this.talk_list.push(Core.speak(MARISA, `目前魔理沙的大脑还在开发中哦～`))
-    // this.talk_list.push(Core.speak(MARISA, `目前魔理沙的脑重量是${weight} 克。如果我现在还不能理解您的意思的话，请教给我更多的知识，我会非常非常用心学习的～`))
+  private async _marisaStatus () {
+    // 记忆重量
+    let weight: number = await Core.status()
+    if (weight) {
+      this.talk_list.push(Core.speak(MARISA, `目前魔理沙的脑重量是${weight} 克。如果我现在还不能理解您的意思的话，请教给我更多的知识，我会非常非常用心学习的～`))
+    } else {
+      this.talk_list.push(Core.speak(MARISA, `我的记忆要一片混乱了 . . .`))
+    }
   }
 
   private _scrollBottom () {

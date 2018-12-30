@@ -8,7 +8,7 @@ interface IConfig {
 }
 
 export default class Api {
-  public static axios(_path: string, _data: any) {
+  public static axios(_path: string, _data?: any) {
     let fromData = new FormData()
     for (const key in _data) {
       if (_data.hasOwnProperty(key)) {
@@ -21,7 +21,8 @@ export default class Api {
      * 配置参数
      */
     let config: IConfig = {
-      baseURL: 'http://127.0.0.1:3000/',
+      // baseURL: 'http://127.0.0.1:3000/',
+      baseURL: 'https://toy.reimu.ru/api/v1/',
       headers: {
         'cms-channel': 0
       }

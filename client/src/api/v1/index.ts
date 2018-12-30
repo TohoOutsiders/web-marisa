@@ -21,4 +21,9 @@ export default class V1 {
     let path = 'Forget'
     return api.axios(path, config)
   }
+
+  public static FecthMemoryCount() {
+    let path = 'Status'
+    return api.axios(path)
+  }
 }

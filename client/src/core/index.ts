@@ -82,4 +82,19 @@ export default class Core {
       return false
     }
   }
+
+  /**
+   * 记忆重量
+   */
+  public static async status() :Promise<any> {
+    try {
+      let res = await Api.FecthMemoryCount()
+      if (res.data.code === 200 && res.data.hasOwnProperty('data')) {
+        return res.data.data
+      }
+    } catch (err) {
+      console.log(` 重量获取 ... ${err}`)
+      return 0
+    }
+  }
 }
