@@ -21,8 +21,7 @@ export default class Api {
      * 配置参数
      */
     let config: IConfig = {
-      // baseURL: 'http://127.0.0.1:3000/',
-      baseURL: 'https://toy.reimu.ru/api/v1/',
+      baseURL: 'http://127.0.0.1:3000/',
       headers: {
         'cms-channel': 0
       }

@@ -44,6 +44,7 @@
     </div>
   </div>
 </template>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Core from '../core'

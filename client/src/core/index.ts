@@ -1,4 +1,5 @@
 import Api from '../api/v1'
+import Tools from '../assets/js/tools'
 
 interface ISpeakConfig {
   name: string
@@ -27,6 +28,7 @@ export default class Core {
     let config = {
       keyword: content
     }
+
     try {
       let res = await Api.fecthMemory(config)
       return res.data.data.answer
@@ -41,11 +43,13 @@ export default class Core {
    */
   public static async teach (content: string) : Promise<any> {
     let str = content.split('`')
+    let realIp: string = await Tools.getIp()
     let config = {
-      ip: '127.0.0.1',
+      ip: realIp,
       keyword: str[0],
       answer: str[1]
     }
+
     try {
       let res = await Api.AddMemory(config)
       if (res.data.data.code === 200) {
