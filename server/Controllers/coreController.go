@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/context"
+	"net/http"
 	"reflect"
 	"strings"
 	"web-marisa/server/Middlewares/pkg"
@@ -42,7 +43,7 @@ func Add(ctx iris.Context) {
 						ratio++
 					}
 				}
-				if float32(ratio) / float32(len(keywords)) >= 0.6 {
+				if float32(ratio)/float32(len(keywords)) >= 0.6 {
 					keywords = append(keywords, toPpl...)
 					real = pkg.Join(keywords, ",")
 					goto DATA
@@ -52,7 +53,7 @@ func Add(ctx iris.Context) {
 				}
 			}
 		}
-		DATA:
+	DATA:
 		data := make(map[string]interface{})
 		data["ip"] = memory.Ip
 		data["keyword"] = real
@@ -101,7 +102,7 @@ func Reply(ctx iris.Context) {
 						ratio++
 					}
 				}
-				if float32(ratio) / float32(len(keywords)) >= 0.6 {
+				if float32(ratio)/float32(len(keywords)) >= 0.6 {
 					answer = v.Answer
 					goto DATA
 				}
@@ -115,7 +116,7 @@ func Reply(ctx iris.Context) {
 			})
 			goto END
 		}
-		DATA:
+	DATA:
 		temp := Services.FetchMemory(answer)
 		data["answer"] = temp.Answer
 		ctx.JSON(context.Map{
@@ -124,7 +125,7 @@ func Reply(ctx iris.Context) {
 		})
 
 	}
-	END:
+END:
 }
 
 func Forget(ctx iris.Context) {
@@ -147,6 +148,16 @@ func Forget(ctx iris.Context) {
 	}
 }
 
+func Status(ctx iris.Context) {
+	memorise := Services.FetchAllMemory()
+	count := len(memorise)
+
+	ctx.JSON(context.Map{
+		"code": http.StatusOK,
+		"data": count,
+	})
+}
+
 func Test(ctx iris.Context) {
 	all := Services.FetchAllMemory()
 	fmt.Println(reflect.TypeOf(all))
@@ -164,7 +175,7 @@ func Test(ctx iris.Context) {
 	fmt.Printf("%s\n", pkg.DuplicateRemove(append(str, str1...)))
 	fmt.Println("Join: ", pkg.Join(str, ","))
 	ctx.JSON(context.Map{
-		"msg": reflect.TypeOf(all),
+		"msg":  reflect.TypeOf(all),
 		"data": all,
 	})
 }
