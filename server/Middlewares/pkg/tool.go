@@ -2,9 +2,25 @@ package pkg
 
 import (
 	"bytes"
+	"sync"
 )
 
-func DuplicateRemove(arr []string) (result []string) {
+type Tools struct {
+}
+
+var (
+	Tool = New()
+	once sync.Once
+)
+
+func New() (t *Tools) {
+	once.Do(func() {
+		t = &Tools{}
+	})
+	return t
+}
+
+func (t *Tools) DuplicateRemove(arr []string) (result []string) {
 	for i := range arr {
 		flag := true
 		for j := range result {
@@ -17,17 +33,17 @@ func DuplicateRemove(arr []string) (result []string) {
 			result = append(result, arr[i])
 		}
 	}
-	return result
+	return
 }
 
-func Join(arr []string, cut string) (result string) {
+func (t *Tools) Join(arr []string, cut string) string {
 	if len(arr) == 0 {
 		return ""
 	}
 
 	var buffer bytes.Buffer
 	for k, v := range arr {
-		if (k != len(arr) - 1) {
+		if k != len(arr) - 1 {
 			buffer.WriteString(v)
 			buffer.WriteString(cut)
 		} else {

@@ -1,19 +1,19 @@
-import Axios from 'axios'
+import Axios from 'axios';
 
-Axios.defaults.timeout = 180000
+Axios.defaults.timeout = 180000;
 
 interface IConfig {
   baseURL: string,
-  headers: Object
+  headers: Object,
 }
 
 export default class Api {
   public static axios(_path: string, _data?: any) {
-    let fromData = new FormData()
+    let fromData = new FormData();
     for (const key in _data) {
       if (_data.hasOwnProperty(key)) {
-        const element = _data[key]
-        fromData.append(key, element)
+        const element = _data[key];
+        fromData.append(key, element);
       }
     }
 
@@ -23,16 +23,16 @@ export default class Api {
     let config: IConfig = {
       baseURL: 'http://127.0.0.1:3000/',
       headers: {
-        'cms-channel': 0
-      }
-    }
+        'cms-channel': 0,
+      },
+    };
 
     return Axios.request({
       method: 'POST',
       baseURL: config.baseURL,
       url: _path,
       data: fromData,
-      headers: config.headers
-    })
+      headers: config.headers,
+    });
   }
 }

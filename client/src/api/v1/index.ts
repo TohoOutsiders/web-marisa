@@ -1,29 +1,28 @@
-import api from '../index'
+import api from '../index';
 
 export default class V1 {
   public static getArticleList(config: any) {
-    let path = 'getArticleList'
-
-    return api.axios(path, config)
+    const path = 'getArticleList';
+    return api.axios(path, config);
   }
 
   public static AddMemory(config: any) {
-    let path = 'Add'
-    return api.axios(path, config)
+    const path = 'Add';
+    return api.axios(path, config);
   }
 
   public static fecthMemory(config: any) {
-    let path = 'Reply'
-    return api.axios(path, config)
+    const path = 'Reply';
+    return api.axios(path, config);
   }
 
   public static DeleteMemoryByAnswer(config: any) {
-    let path = 'Forget'
-    return api.axios(path, config)
+    const path = 'Forget';
+    return api.axios(path, config);
   }
 
   public static FecthMemoryCount() {
-    let path = 'Status'
-    return api.axios(path)
+    const path = 'Status';
+    return api.axios(path);
   }
 }

@@ -6,11 +6,11 @@ import (
 	"github.com/kataras/iris/context"
 	"net/http"
 	"reflect"
+	"server/Middlewares/pkg"
+	"server/Middlewares/segment"
+	"server/Models"
+	"server/Services"
 	"strings"
-	"web-marisa/server/Middlewares/pkg"
-	"web-marisa/server/Middlewares/segment"
-	"web-marisa/server/Models"
-	"web-marisa/server/Services"
 )
 
 func Add(ctx iris.Context) {
@@ -23,14 +23,14 @@ func Add(ctx iris.Context) {
 			"code": 400,
 			"data": err.Error(),
 		})
-		fmt.Errorf("Controller Add() error: %s", err)
+		fmt.Println("Controller Add() error: %s", err)
 	} else {
 		toPpl := segment.Init().Cut(memory.Keyword)
 		memorise := Services.FetchAllMemory()
 		var real string
 
 		if len(memorise) == 0 {
-			real = pkg.Join(toPpl, ",")
+			real = pkg.New().Join(toPpl, ",")
 			goto DATA
 		}
 
@@ -45,10 +45,10 @@ func Add(ctx iris.Context) {
 				}
 				if float32(ratio)/float32(len(keywords)) >= 0.6 {
 					keywords = append(keywords, toPpl...)
-					real = pkg.Join(keywords, ",")
+					real = pkg.New().Join(keywords, ",")
 					goto DATA
 				} else {
-					real = pkg.Join(toPpl, ",")
+					real = pkg.New().Join(toPpl, ",")
 					goto DATA
 				}
 			}
@@ -76,7 +76,7 @@ func Reply(ctx iris.Context) {
 			"code": 400,
 			"data": err.Error(),
 		})
-		fmt.Errorf("Controller Reply() error: %s", err)
+		fmt.Println("Controller Reply() error: %s", err)
 	} else {
 		data := make(map[string]interface{})
 		toPpl := segment.Init().Cut(memory.Keyword)
@@ -93,7 +93,7 @@ func Reply(ctx iris.Context) {
 		}
 
 		for _, v := range memorise {
-			fmt.Println(v)
+			//fmt.Println(v)
 			ratio := 0
 			keywords := strings.Split(v.Keyword, ",")
 			for _, keyword := range keywords {
@@ -102,7 +102,7 @@ func Reply(ctx iris.Context) {
 						ratio++
 					}
 				}
-				if float32(ratio)/float32(len(keywords)) >= 0.6 {
+				if float32(ratio)/float32(len(keywords)) >= 0.4 {
 					answer = v.Answer
 					goto DATA
 				}
@@ -137,7 +137,7 @@ func Forget(ctx iris.Context) {
 			"code": 400,
 			"data": err.Error(),
 		})
-		fmt.Errorf("Controller Forget() error: %s", err)
+		fmt.Println("Controller Forget() error: %s", err)
 	} else {
 		if Services.DeleteMemoryByAnswer(memory.Answer) {
 			ctx.JSON(context.Map{
@@ -169,11 +169,11 @@ func Test(ctx iris.Context) {
 		fmt.Println(v.Keyword)
 		fmt.Printf("%s\n", strings.Split(v.Keyword, ","))
 		fmt.Println(reflect.TypeOf(strings.Split(v.Keyword, ",")))
-		fmt.Printf("%s\n", pkg.DuplicateRemove(str))
+		fmt.Printf("%s\n", pkg.New().DuplicateRemove(str))
 	}
 	fmt.Printf("%s\n", append(str, str1...))
-	fmt.Printf("%s\n", pkg.DuplicateRemove(append(str, str1...)))
-	fmt.Println("Join: ", pkg.Join(str, ","))
+	fmt.Printf("%s\n", pkg.New().DuplicateRemove(append(str, str1...)))
+	fmt.Println("Join: ", pkg.New().Join(str, ","))
 	ctx.JSON(context.Map{
 		"msg":  reflect.TypeOf(all),
 		"data": all,

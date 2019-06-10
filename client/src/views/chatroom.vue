@@ -46,115 +46,130 @@
 </template>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import Core from '../core'
-import api from '../api/v1'
+import { Component, Vue } from 'vue-property-decorator';
+import Core from '../core';
+import api from '../api/v1';
 
-const MARISA: string = '白絲魔理沙'
-const YOU: string = 'You'
+const MARISA: string = '白絲魔理沙';
+const YOU: string = 'You';
 
 @Component({
   components: {
   },
 })
 export default class chatroom extends Vue {
-  talk_list: Object[] = []
-  cmd_flag: number = 0
+  talk_list: Object[] = [];
+  cmd_flag: number = 0;
+  teachFlag: number = 0;
+  teachContent: string[] = [];
 
   $refs!: {
     talk_place: HTMLFormElement,
-    you: HTMLFormElement
+    you: HTMLFormElement,
   }
 
   created() {
-    console.log('run at created()')
+    console.log('run at created()');
   }
 
   updated() {
-    this._scrollBottom()
+    this._scrollBottom();
   }
 
   private async sendMessage (event: KeyboardEvent | MouseEvent) {
-    let _content: string = await this.$refs.you.value
-    if (_content === '') return false
+    const _content: string = await this.$refs.you.value;
+    if (_content === '') return false;
     if ((<KeyboardEvent>event).keyCode === 13 || (<MouseEvent>event).button === 0) {
-      let _youTalk: Object = Core.speak(YOU, _content)
-      this.talk_list.push(_youTalk)
+      const _youTalk: Object = Core.speak(YOU, _content);
+      this.talk_list.push(_youTalk);
       switch (this.cmd_flag) {
         case 0:
-          this._marisaThinking(_content)
+          this._marisaThinking(_content);
           break
         case 1:
-         this._teachMarisa(_content)
+         this._teachMarisa(_content);
           break
       }
-      this.$refs.you.value = ''
+      this.$refs.you.value = '';
     }
   }
 
   private _marisaThinking (_content: string) {
     switch (_content) {
       case 'teach':
-        this.talk_list.push(Core.speak(MARISA, '要教给魔里沙什么 . .? 现在只能学习语句.. 如"问`答". . 中止教学输入 exit . .'))
-        this.cmd_flag = 1
+        this.talk_list.push(Core.speak(MARISA, '要教给魔里沙什么 ..? 现在只能学习语句.. 如"问和答" .. 中止教学输入 exit ..'));
+        this.talk_list.push(Core.speak(MARISA, '（ < ゝω·）教学模式启动 ！'))
+        this.cmd_flag = 1;
         break
       case 'forget':
-        this._marisaForget()
+        this._marisaForget();
         break
       case 'status':
-        this._marisaStatus()
+        this._marisaStatus();
         break
-      default: this._marisaReply(_content)
+      default: this._marisaReply(_content);
     }
   }
 
   private async _marisaReply (_content: string) {
-    let answer: string = await Core.reply(_content)
+    const answer: string = await Core.reply(_content);
     if (answer !== undefined) {
-      this.talk_list.push(Core.speak(MARISA, answer))
+      this.talk_list.push(Core.speak(MARISA, answer));
     } else {
-      this.talk_list.push(Core.speak(MARISA, '唔嗯...不懂你在说什么呢...教教我吧~'))
+      this.talk_list.push(Core.speak(MARISA, '唔嗯 ...  不懂你在说什么呢 ...  教教我吧 ..'));
     }
   }
 
   private async _teachMarisa (_content: string) {
+    if (this.teachFlag === 0) {
+      this.talk_list.push(Core.speak(MARISA, '那么 ... 在这样的情况下该如何回答呢 ..?'))
+    }
+
+    // 学习监控旗帜
+    this.teachFlag++
     if (_content === 'exit' || _content === 'teach' || _content === 'forget' || _content === 'status') {
-      this.talk_list.push(Core.speak(YOU, '白絲魔理沙，退出学习模式'))
-      this.cmd_flag = 0
-      return
+      this.talk_list.push(Core.speak(YOU, '白絲魔理沙，退出学习模式'));
+      this.cmd_flag = 0;
+      return;
     }
-    let memorey: Promise<any> = Core.teach(_content)
-    if (memorey) {
-      this.talk_list.push(Core.speak(MARISA, '行，我知道了'))
-    } else {
-      this.talk_list.push(Core.speak(MARISA, '魔理沙不想记住 . . . . . . 对不起'))
+    this.teachContent.push(_content)
+
+    if (this.teachFlag > 1) {
+      const query: string = this.teachContent.join('`')
+      const memorey: Promise<any> = Core.teach(query)
+      if (memorey) {
+        this.talk_list.push(Core.speak(MARISA, '行，我知道了'));
+      } else {
+        this.talk_list.push(Core.speak(MARISA, '魔理沙不想记住 . . . . . . 对不起'));
+      }
+      this.cmd_flag = 0;
+      this.teachFlag = 0;
     }
-    this.cmd_flag = 0
   }
 
   private async _marisaForget () {
-    let flag: Boolean = await Core.forget(this.talk_list)
+    const flag: Boolean = await Core.forget(this.talk_list);
     if (flag) {
-      this.talk_list.push(Core.speak(MARISA, '这句话魔理沙说错了么 . . . 呜呜呜对不起 . . .'))
+      this.talk_list.push(Core.speak(MARISA, '这句话魔理沙说错了么 ... 呜呜呜对不起 ...'));
     } else {
-      this.talk_list.push(Core.speak(MARISA, '魔理沙这阵子不太想忘记东西的样子 . . . . . .'))
+      this.talk_list.push(Core.speak(MARISA, '魔理沙这阵子不太想忘记东西的样子 ..'));
     }
   }
 
   private async _marisaStatus () {
     // 记忆重量
-    let weight: number = await Core.status()
+    const weight: number = await Core.status();
     if (weight) {
-      this.talk_list.push(Core.speak(MARISA, `目前魔理沙的脑重量是${weight} 克。如果我现在还不能理解您的意思的话，请教给我更多的知识，我会非常非常用心学习的～`))
+      this.talk_list.push(Core.speak(MARISA, `目前魔理沙的脑重量是 ${weight} 克。如果我现在还不能理解您的意思的话，请教给我更多的知识，我会非常非常用心学习的～`));
     } else {
-      this.talk_list.push(Core.speak(MARISA, `我的记忆要一片混乱了 . . .`))
+      this.talk_list.push(Core.speak(MARISA, `我的记忆要一片混乱了 ...`));
     }
   }
 
   private _scrollBottom () {
     this.$nextTick(() => {
-      let _scrollHeight = this.$refs.talk_place['scrollHeight']
-      this.$refs.talk_place['scrollTop'] = _scrollHeight
+      let _scrollHeight = this.$refs.talk_place['scrollHeight'];
+      this.$refs.talk_place['scrollTop'] = _scrollHeight;
     })
   }
 }

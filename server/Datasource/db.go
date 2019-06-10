@@ -6,7 +6,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"sync"
-	"web-marisa/server/Middlewares/setting"
+	"server/Middlewares/setting"
 )
 
 type MysqlConnectionPool struct {

@@ -2,7 +2,7 @@ package Routes
 
 import (
 	"github.com/kataras/iris"
-	"web-marisa/server/Controllers"
+	"server/Controllers"
 )
 
 func Configure(app *iris.Application) {

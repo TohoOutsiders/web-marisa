@@ -1,8 +1,8 @@
 package Services
 
 import (
-	"web-marisa/server/Datasource"
-	"web-marisa/server/Models"
+	"server/Datasource"
+	"server/Models"
 )
 
 // 插入记忆

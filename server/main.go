@@ -7,9 +7,9 @@ import (
 	recover2 "github.com/kataras/iris/middleware/recover"
 	"log"
 	"os"
-	"web-marisa/server/Datasource"
-	"web-marisa/server/Middlewares/setting"
-	"web-marisa/server/Routes"
+	"server/Datasource"
+	"server/Middlewares/setting"
+	"server/Routes"
 )
 
 func main() {
