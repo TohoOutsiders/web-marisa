@@ -5,13 +5,17 @@ import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/context"
 	"net/http"
-	"reflect"
-	"server/Middlewares/pkg"
-	"server/Middlewares/segment"
 	"server/Models"
 	"server/Services"
-	"strings"
+	"server/repository"
 )
+
+var (
+	service = &Services.MemoriseService{
+		Repo: &repository.MemoriseRepo{},
+	}
+)
+
 
 func Add(ctx iris.Context) {
 	memory := Models.Memorise{}
@@ -25,40 +29,7 @@ func Add(ctx iris.Context) {
 		})
 		fmt.Println("Controller Add() error: %s", err)
 	} else {
-		toPpl := segment.Init().Cut(memory.Keyword)
-		memorise := Services.FetchAllMemory()
-		var real string
-
-		if len(memorise) == 0 {
-			real = pkg.New().Join(toPpl, ",")
-			goto DATA
-		}
-
-		for _, v := range memorise {
-			ratio := 0
-			keywords := strings.Split(v.Keyword, ",")
-			for _, keyword := range keywords {
-				for _, ppl := range toPpl {
-					if keyword == ppl {
-						ratio++
-					}
-				}
-				if float32(ratio)/float32(len(keywords)) >= 0.6 {
-					keywords = append(keywords, toPpl...)
-					real = pkg.New().Join(keywords, ",")
-					goto DATA
-				} else {
-					real = pkg.New().Join(toPpl, ",")
-					goto DATA
-				}
-			}
-		}
-	DATA:
-		data := make(map[string]interface{})
-		data["ip"] = memory.Ip
-		data["keyword"] = real
-		data["answer"] = memory.Answer
-		if Services.AddMemory(data) {
+		if data := service.Add(memory); data != nil {
 			ctx.JSON(context.Map{
 				"code": 200,
 				"data": data,
@@ -78,54 +49,12 @@ func Reply(ctx iris.Context) {
 		})
 		fmt.Println("Controller Reply() error: %s", err)
 	} else {
-		data := make(map[string]interface{})
-		toPpl := segment.Init().Cut(memory.Keyword)
-		memorise := Services.FetchAllMemory()
-		var answer string
-
-		if len(memorise) == 0 {
-			data["answer"] = "唔嗯...不懂你在说什么呢...教教我吧~"
-			ctx.JSON(context.Map{
-				"code": 10001,
-				"data": data,
-			})
-			goto END
-		}
-
-		for _, v := range memorise {
-			//fmt.Println(v)
-			ratio := 0
-			keywords := strings.Split(v.Keyword, ",")
-			for _, keyword := range keywords {
-				for _, ppl := range toPpl {
-					if keyword == ppl {
-						ratio++
-					}
-				}
-				if float32(ratio)/float32(len(keywords)) >= 0.4 {
-					answer = v.Answer
-					goto DATA
-				}
-			}
-		}
-		if answer == "" {
-			data["answer"] = "唔嗯...不懂你在说什么呢...教教我吧~"
-			ctx.JSON(context.Map{
-				"code": 10001,
-				"data": data,
-			})
-			goto END
-		}
-	DATA:
-		temp := Services.FetchMemory(answer)
-		data["answer"] = temp.Answer
+		code, data := service.Reply(memory)
 		ctx.JSON(context.Map{
-			"code": 200,
+			"code": code,
 			"data": data,
 		})
-
 	}
-END:
 }
 
 func Forget(ctx iris.Context) {
@@ -139,7 +68,7 @@ func Forget(ctx iris.Context) {
 		})
 		fmt.Println("Controller Forget() error: %s", err)
 	} else {
-		if Services.DeleteMemoryByAnswer(memory.Answer) {
+		if flag := service.Forget(memory.Answer); flag {
 			ctx.JSON(context.Map{
 				"code": 200,
 				"data": "success",
@@ -149,33 +78,9 @@ func Forget(ctx iris.Context) {
 }
 
 func Status(ctx iris.Context) {
-	memorise := Services.FetchAllMemory()
-	count := len(memorise)
-
+	count := service.Status()
 	ctx.JSON(context.Map{
 		"code": http.StatusOK,
 		"data": count,
-	})
-}
-
-func Test(ctx iris.Context) {
-	all := Services.FetchAllMemory()
-	fmt.Println(reflect.TypeOf(all))
-	str := []string{"你好", "再见", "再见"}
-	str1 := []string{"fuck", "hello", "你好"}
-	for _, v := range all {
-		fmt.Println(v.Ip)
-		fmt.Println(v.Answer)
-		fmt.Println(v.Keyword)
-		fmt.Printf("%s\n", strings.Split(v.Keyword, ","))
-		fmt.Println(reflect.TypeOf(strings.Split(v.Keyword, ",")))
-		fmt.Printf("%s\n", pkg.New().DuplicateRemove(str))
-	}
-	fmt.Printf("%s\n", append(str, str1...))
-	fmt.Printf("%s\n", pkg.New().DuplicateRemove(append(str, str1...)))
-	fmt.Println("Join: ", pkg.New().Join(str, ","))
-	ctx.JSON(context.Map{
-		"msg":  reflect.TypeOf(all),
-		"data": all,
 	})
 }
