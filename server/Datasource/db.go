@@ -2,11 +2,13 @@ package Datasource
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+	"github.com/kataras/iris"
 	"log"
-	"sync"
+	"os"
 	"server/Middlewares/setting"
+	"sync"
 )
 
 type MysqlConnectionPool struct {
@@ -55,4 +57,13 @@ func (m *MysqlConnectionPool) InitDataPool() (issue bool) {
 
 func (m *MysqlConnectionPool) GetMysqlDB() (dbCon *gorm.DB) {
 	return db
+}
+
+func ConnectDatabase(app *iris.Application) {
+	issue := GetInstace().InitDataPool()
+	if !issue {
+		log.Println("Inital database pool fail")
+		os.Exit(1)
+	}
+	app.Logger().Info("Connect Database success")
 }
