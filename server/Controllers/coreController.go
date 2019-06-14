@@ -3,84 +3,80 @@ package Controllers
 import (
 	"fmt"
 	"github.com/kataras/iris"
-	"github.com/kataras/iris/context"
 	"net/http"
 	"server/Models"
 	"server/Services"
-	"server/repository"
 )
 
-var (
-	service = &Services.MemoriseService{
-		Repo: &repository.MemoriseRepo{},
-	}
-)
-
-
-func Add(ctx iris.Context) {
+func Add(ctx iris.Context, service Services.IMemoriseService) ModelAndView {
 	memory := Models.Memorise{}
 
 	err := ctx.ReadForm(&memory)
 
 	if err != nil {
-		ctx.JSON(context.Map{
-			"code": 400,
-			"data": err.Error(),
-		})
 		fmt.Println("Controller Add() error: %s", err)
-	} else {
-		if data := service.Add(memory); data != nil {
-			ctx.JSON(context.Map{
-				"code": 200,
-				"data": data,
-			})
+		return ModelAndView{
+			Code: http.StatusBadRequest,
+			Data: err.Error(),
 		}
+	}
+	if data := service.Add(memory); data != nil {
+		return ModelAndView{
+			Code: http.StatusOK,
+			Data: data,
+		}
+	}
+	return ModelAndView{
+		Code: http.StatusBadGateway,
+		Data: "服务器繁忙",
 	}
 }
 
-func Reply(ctx iris.Context) {
+func Reply(ctx iris.Context, service Services.IMemoriseService) ModelAndView {
 	memory := Models.Memorise{}
 
 	err := ctx.ReadForm(&memory)
 	if err != nil {
-		ctx.JSON(context.Map{
-			"code": 400,
-			"data": err.Error(),
-		})
 		fmt.Println("Controller Reply() error: %s", err)
-	} else {
-		code, data := service.Reply(memory)
-		ctx.JSON(context.Map{
-			"code": code,
-			"data": data,
-		})
+		return ModelAndView{
+			Code: http.StatusBadRequest,
+			Data: err.Error(),
+		}
+	}
+	code, data := service.Reply(memory)
+	return ModelAndView{
+		Code: code,
+		Data: data,
 	}
 }
 
-func Forget(ctx iris.Context) {
+func Forget(ctx iris.Context, service Services.IMemoriseService) ModelAndView {
 	memory := Models.Memorise{}
 
 	err := ctx.ReadForm(&memory)
 	if err != nil {
-		ctx.JSON(context.Map{
-			"code": 400,
-			"data": err.Error(),
-		})
 		fmt.Println("Controller Forget() error: %s", err)
-	} else {
-		if flag := service.Forget(memory.Answer); flag {
-			ctx.JSON(context.Map{
-				"code": 200,
-				"data": "success",
-			})
+		return ModelAndView{
+			Code: http.StatusBadRequest,
+			Data: err.Error(),
 		}
+	}
+	if flag := service.Forget(memory.Answer); flag {
+		return ModelAndView{
+			Code: http.StatusOK,
+			Data: "success",
+		}
+	}
+	return ModelAndView{
+		Code: http.StatusBadGateway,
+		Data: "服务器繁忙",
 	}
 }
 
-func Status(ctx iris.Context) {
+func Status(service Services.IMemoriseService) ModelAndView {
 	count := service.Status()
-	ctx.JSON(context.Map{
-		"code": http.StatusOK,
-		"data": count,
-	})
+	return ModelAndView{
+		Code: http.StatusOK,
+		Data: count,
+	}
 }

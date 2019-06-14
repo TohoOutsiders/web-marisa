@@ -7,7 +7,7 @@
 package repository
 
 import (
-	"server/Datasource"
+	"github.com/jinzhu/gorm"
 	"server/Models"
 )
 
@@ -22,11 +22,17 @@ type IMemoriseRepo interface {
 	DeleteMemoryByAnswer(answer string) bool
 }
 
-type MemoriseRepo struct {
+// new memory-based repository
+func NewMemoriseRepo(source *gorm.DB) IMemoriseRepo {
+	return &memoriseRepo{source}
 }
 
-func (m *MemoriseRepo) AddMemory(data map[string]interface{}) bool {
-	var db = Datasource.GetInstace().GetMysqlDB()
+type memoriseRepo struct {
+	source *gorm.DB
+}
+
+func (m *memoriseRepo) AddMemory(data map[string]interface{}) bool {
+	var db = m.source
 	memory := Models.Memorise{
 		Ip: data["ip"].(string),
 		Keyword: data["keyword"].(string),
@@ -36,20 +42,20 @@ func (m *MemoriseRepo) AddMemory(data map[string]interface{}) bool {
 	return true
 }
 
-func (m *MemoriseRepo) FetchAllMemory() (memorise []Models.Memorise) {
-	var db = Datasource.GetInstace().GetMysqlDB()
+func (m *memoriseRepo) FetchAllMemory() (memorise []Models.Memorise) {
+	var db = m.source
 	db.Find(&memorise)
 	return
 }
 
-func (m *MemoriseRepo) FetchMemory(answer string) (memorise Models.Memorise) {
-	var db = Datasource.GetInstace().GetMysqlDB()
+func (m *memoriseRepo) FetchMemory(answer string) (memorise Models.Memorise) {
+	var db = m.source
 	db.Where("answer = ?", answer).First(&memorise)
 	return
 }
 
-func (m *MemoriseRepo) DeleteMemoryByAnswer(answer string) bool {
-	var db = Datasource.GetInstace().GetMysqlDB()
+func (m *memoriseRepo) DeleteMemoryByAnswer(answer string) bool {
+	var db = m.source
 	db.Where("answer = ?", answer).Delete(Models.Memorise{})
 	return true
 }

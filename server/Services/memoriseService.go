@@ -19,11 +19,16 @@ type IMemoriseService interface {
 	Status() int
 }
 
-type MemoriseService struct {
+// returns the default service
+func NewMemoriseService(repo repository.IMemoriseRepo) IMemoriseService {
+	return &memoriseService{repo}
+}
+
+type memoriseService struct {
 	Repo repository.IMemoriseRepo
 }
 
-func (m *MemoriseService) Add(memory Models.Memorise) map[string]interface{} {
+func (m *memoriseService) Add(memory Models.Memorise) map[string]interface{} {
 	toPpl := segment.Init().Cut(memory.Keyword)
 	memorise := m.Repo.FetchAllMemory()
 	var real string
@@ -63,7 +68,7 @@ DATA:
 	return nil
 }
 
-func (m *MemoriseService) Reply(memory Models.Memorise) (int, map[string]interface{}) {
+func (m *memoriseService) Reply(memory Models.Memorise) (int, map[string]interface{}) {
 	data := make(map[string]interface{})
 	toPpl := segment.Init().Cut(memory.Keyword)
 	memorise := m.Repo.FetchAllMemory()
@@ -99,14 +104,14 @@ DATA:
 	return 200, data
 }
 
-func (m *MemoriseService) Forget(answer string) bool {
+func (m *memoriseService) Forget(answer string) bool {
 	if m.Repo.DeleteMemoryByAnswer(answer) {
 		return true
 	}
 	return false
 }
 
-func (m *MemoriseService) Status() int {
+func (m *memoriseService) Status() int {
 	memorise := m.Repo.FetchAllMemory()
 	count := len(memorise)
 	return count
