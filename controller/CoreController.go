@@ -15,7 +15,7 @@ import (
 )
 
 type Core struct {
-	Service service.IMemoriseService
+	Service service.IMemoriseService `inject:""`
 }
 
 func (c *Core) Add(ctx *gin.Context) {

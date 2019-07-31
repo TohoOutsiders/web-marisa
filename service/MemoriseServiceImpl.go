@@ -14,27 +14,11 @@ import (
 	"strings"
 )
 
-type IMemoriseService interface {
-	// 记忆学习
-	Add(memory models.Memorise) map[string]interface{}
-	// 回复
-	Reply(memory models.Memorise) (int, map[string]interface{})
-	// 忘记
-	Forget(answer string) bool
-	// 状态
-	Status() int
+type MemoriseService struct {
+	Repo repository.IMemoriseRepo `inject:""`
 }
 
-// returns the default service
-func NewMemoriseService(repo repository.IMemoriseRepo) IMemoriseService {
-	return &memoriseService{repo}
-}
-
-type memoriseService struct {
-	Repo repository.IMemoriseRepo
-}
-
-func (m *memoriseService) Add(memory models.Memorise) map[string]interface{} {
+func (m *MemoriseService) Add(memory models.Memorise) map[string]interface{} {
 	toPpl := segment.Init().Cut(memory.Keyword)
 	memorise := m.Repo.FetchAllMemory()
 	var real string
@@ -74,7 +58,7 @@ DATA:
 	return nil
 }
 
-func (m *memoriseService) Reply(memory models.Memorise) (int, map[string]interface{}) {
+func (m *MemoriseService) Reply(memory models.Memorise) (int, map[string]interface{}) {
 	data := make(map[string]interface{})
 	toPpl := segment.Init().Cut(memory.Keyword)
 	memorise := m.Repo.FetchAllMemory()
@@ -82,7 +66,7 @@ func (m *memoriseService) Reply(memory models.Memorise) (int, map[string]interfa
 
 	if len(memorise) == 0 {
 		data["answer"] = "唔嗯...不懂你在说什么呢...教教我吧~"
-		return 10001, data
+		return 200, data
 	}
 
 	for _, v := range memorise {
@@ -102,7 +86,7 @@ func (m *memoriseService) Reply(memory models.Memorise) (int, map[string]interfa
 	}
 	if answer == "" {
 		data["answer"] = "唔嗯...不懂你在说什么呢...教教我吧~"
-		return 10001, data
+		return 200, data
 	}
 DATA:
 	temp := m.Repo.FetchMemory(answer)
@@ -110,14 +94,14 @@ DATA:
 	return 200, data
 }
 
-func (m *memoriseService) Forget(answer string) bool {
+func (m *MemoriseService) Forget(answer string) bool {
 	if m.Repo.DeleteMemoryByAnswer(answer) {
 		return true
 	}
 	return false
 }
 
-func (m *memoriseService) Status() int {
+func (m *MemoriseService) Status() int {
 	memorise := m.Repo.FetchAllMemory()
 	count := len(memorise)
 	return count

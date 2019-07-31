@@ -8,17 +8,20 @@ package cmd
 
 import (
 	"github.com/gin-gonic/gin"
-	"server/datasource"
 	"server/routes"
+	"server/segment"
 )
+
+var err error
 
 func App() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 
-	// 连接数据库
-	datasource.ConnectDatabase()
-	// 注册路由
+	//加载词典
+	segment.Init()
+
+	// 连接数据库 & 依赖注入 & 注册路由
 	routes.Configure(r)
 
 	return r

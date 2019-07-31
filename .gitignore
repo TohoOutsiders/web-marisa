@@ -1,5 +1,6 @@
 .DS_Store
 
 dist_linux
+dist_windows
 # Editor directories and files
 .idea
