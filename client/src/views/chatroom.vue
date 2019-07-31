@@ -4,7 +4,7 @@
       <div class="talk-panel">
         <span>うるさい! うるさい.. うるさい...</span>
         <div ref="talk_place" class="talk-place">
-          <div class="talk_entry" v-for="item in talk_list" :class="{'you_color': item.name == 'You'}">
+          <div class="talk_entry" v-for="(item, index) in talk_list" :class="{'you_color': item.name == 'You'}" :key="index">
             <span class="talk_item" v-text="item.name" :class="{'you_color': item.name == 'You'}"></span>&nbsp;:&nbsp;
             <span class="talk_item" v-html="item.content" :class="{'you_color': item.name == 'You'}"></span>
           </div>
@@ -77,9 +77,14 @@ export default class chatroom extends Vue {
   }
 
   private async sendMessage (event: KeyboardEvent | MouseEvent) {
-    const _content: string = await this.$refs.you.value;
-    if (_content === '') return false;
+    let _content: string = await this.$refs.you.value;
+    _content = _content.trim();
     if ((<KeyboardEvent>event).keyCode === 13 || (<MouseEvent>event).button === 0) {
+      if (_content === '') {
+        this.talk_list.push(Core.speak(MARISA, 'ん？ 你说了什么咩 ¿'));
+        return false;
+      }
+
       const _youTalk: Object = Core.speak(YOU, _content);
       this.talk_list.push(_youTalk);
       switch (this.cmd_flag) {

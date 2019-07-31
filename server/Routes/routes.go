@@ -22,10 +22,15 @@ func Configure(app *iris.Application) {
 	app.Get("/", Controllers.GetIndexHandler)
 
 	// Core
+	//app.UseGlobal(before)
 	app.PartyFunc("/", func(r iris.Party) {
-		app.Post("/Add", hero.Handler(Controllers.Add))
-		app.Post("/Reply", hero.Handler(Controllers.Reply))
-		app.Post("/Forget", hero.Handler(Controllers.Forget))
-		app.Post("/Status", hero.Handler(Controllers.Status))
+		r.Post("Add", hero.Handler(Controllers.Add))
+		r.Post("Reply", hero.Handler(Controllers.Reply))
+		r.Post("Forget", hero.Handler(Controllers.Forget))
+		r.Post("Status", hero.Handler(Controllers.Status))
 	})
 }
+
+//func before(ctx iris.Context) {
+//	log.Println("fuck: ", ctx.Path())
+//}
