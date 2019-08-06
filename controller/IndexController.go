@@ -14,5 +14,5 @@ type Index struct {
 }
 
 func (i *Index) Get(ctx *gin.Context) {
-	Json(ctx, ModelAndView{200, "Hello marisa~"})
+	Json(ctx, &ModelAndView{200, "Hello marisa~"})
 }

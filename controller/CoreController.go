@@ -25,21 +25,17 @@ func (c *Core) Add(ctx *gin.Context) {
 
 	if err != nil {
 		log.Println("[Controller] Add() error: ", err)
-		Json(ctx, ModelAndView{
+		Json(ctx, &ModelAndView{
 			Code: http.StatusBadRequest,
 			Data: err.Error(),
 		})
 	}
 	if data := c.Service.Add(memory); data != nil {
-		Json(ctx, ModelAndView{
+		Json(ctx, &ModelAndView{
 			Code: http.StatusOK,
 			Data: data,
 		})
 	}
-	Json(ctx, ModelAndView{
-		Code: http.StatusBadGateway,
-		Data: "服务器繁忙",
-	})
 }
 
 func (c *Core) Reply(ctx *gin.Context) {
@@ -48,13 +44,13 @@ func (c *Core) Reply(ctx *gin.Context) {
 	err := ctx.ShouldBind(&memory)
 	if err != nil {
 		log.Println("[Controller] Reply() error: ", err)
-		Json(ctx, ModelAndView{
+		Json(ctx, &ModelAndView{
 			Code: http.StatusBadRequest,
 			Data: err.Error(),
 		})
 	}
 	code, data := c.Service.Reply(memory)
-	Json(ctx, ModelAndView{
+	Json(ctx, &ModelAndView{
 		Code: code,
 		Data: data,
 	})
@@ -66,18 +62,18 @@ func (c *Core) Forget(ctx *gin.Context) {
 	err := ctx.ShouldBind(&memory)
 	if err != nil {
 		log.Println("[Controller] Forget() error: ", err)
-		Json(ctx, ModelAndView{
+		Json(ctx, &ModelAndView{
 			Code: http.StatusBadRequest,
 			Data: err.Error(),
 		})
 	}
 	if flag := c.Service.Forget(memory.Answer); flag {
-		Json(ctx, ModelAndView{
+		Json(ctx, &ModelAndView{
 			Code: http.StatusOK,
 			Data: "success",
 		})
 	}
-	Json(ctx, ModelAndView{
+	Json(ctx, &ModelAndView{
 		Code: http.StatusBadGateway,
 		Data: "服务器繁忙",
 	})
@@ -85,7 +81,7 @@ func (c *Core) Forget(ctx *gin.Context) {
 
 func (c *Core) Status(ctx *gin.Context) {
 	count := c.Service.Status()
-	Json(ctx, ModelAndView{
+	Json(ctx, &ModelAndView{
 		Code: http.StatusOK,
 		Data: count,
 	})

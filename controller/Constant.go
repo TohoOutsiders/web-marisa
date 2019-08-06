@@ -13,6 +13,6 @@ type ModelAndView struct {
 	Data interface{} `json:"data"`
 }
 
-func Json(ctx *gin.Context, model ModelAndView) {
-	ctx.JSON(model.Code, model)
+func Json(ctx *gin.Context, model *ModelAndView) {
+	ctx.JSON(model.Code, &model)
 }

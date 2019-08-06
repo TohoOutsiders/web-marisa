@@ -1,0 +1,12 @@
+server:
+  port: 3000
+  read-timeout: 60
+  write-timeout: 60
+
+database:
+  type: mysql
+  user: root
+  password: 123456
+  host: 127.0.0.1:3306
+  name: marisa_memorise
+  table-prefix: go_

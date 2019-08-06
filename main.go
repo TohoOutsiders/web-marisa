@@ -14,5 +14,5 @@ import (
 
 func main() {
 	app := cmd.App()
-	app.Run(fmt.Sprintf(":%d", setting.HttpPort))
+	app.Run(fmt.Sprintf(":%s", setting.Config.Server.Port))
 }

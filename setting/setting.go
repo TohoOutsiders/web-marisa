@@ -7,34 +7,49 @@
 package setting
 
 import (
-	"github.com/go-ini/ini"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"log"
-	"time"
 )
 
 var (
-	Cfg *ini.File
-
-	HttpPort int
-	ReadTimeout time.Duration
-	WriteTimeout time.Duration
+	Config *Conf
 )
 
-func init() {
-	var err error
-	Cfg, err = ini.Load("Config/config.ini")
-	if err != nil {
-		log.Fatalln("Fial to parse 'Config/config.ini: ", err)
-	}
-	LoadServer()
+type Conf struct {
+	Server   Server   `yaml:"server"`
+	Database Database `yaml:"database"`
 }
 
-func LoadServer() {
-	sec, err := Cfg.GetSection("server")
+type Server struct {
+	Port         string `yaml:"port"`
+	ReadTimeout  string `yaml:"read-timeout"`
+	WriteTimeout string `yaml:"write-timeout"`
+}
+
+type Database struct {
+	Type        string `yaml:"type"`
+	User        string `yaml:"user"`
+	Password    string `yaml:"password"`
+	Host        string `yaml:"host"`
+	Name        string `yaml:"name"`
+	TablePrefix string `yaml:"table-prefix"`
+}
+
+func init() {
+	Config = getConf()
+	log.Println("[Setting] Config init success")
+}
+
+func getConf() *Conf {
+	var c *Conf
+	file, err := ioutil.ReadFile("Config/config.yml")
 	if err != nil {
-		log.Fatalln("Fail to get config section 'server': ", err)
+		log.Println("[Setting] config error: ", err)
 	}
-	HttpPort = sec.Key("HTTP_PORT").MustInt(3000)
-	ReadTimeout = time.Duration(sec.Key("READ_TIMEOUT").MustInt(60)) * time.Second
-	WriteTimeout = time.Duration(sec.Key("WRITE_TIMEOUT").MustInt(60)) * time.Second
+	err = yaml.UnmarshalStrict(file, &c)
+	if err != nil {
+		log.Println("[Setting] yaml unmarshal error: ", err)
+	}
+	return c
 }
