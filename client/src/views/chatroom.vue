@@ -126,17 +126,18 @@ export default class chatroom extends Vue {
   }
 
   private async _teachMarisa (_content: string) {
+    if (_content === 'exit' || _content === 'teach' || _content === 'forget' || _content === 'status') {
+      this.talk_list.push(Core.speak(YOU, '白絲魔理沙，退出学习模式'));
+      this.cmd_flag = 0;
+      return;
+    }
+
     if (this.teachFlag === 0) {
       this.talk_list.push(Core.speak(MARISA, '那么 ... 在这样的情况下该如何回答呢 ..?'))
     }
 
     // 学习监控旗帜
     this.teachFlag++
-    if (_content === 'exit' || _content === 'teach' || _content === 'forget' || _content === 'status') {
-      this.talk_list.push(Core.speak(YOU, '白絲魔理沙，退出学习模式'));
-      this.cmd_flag = 0;
-      return;
-    }
     this.teachContent.push(_content)
 
     if (this.teachFlag > 1) {
