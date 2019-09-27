@@ -72,11 +72,12 @@ func (c *Core) Forget(ctx *gin.Context) {
 			Code: http.StatusOK,
 			Data: "success",
 		})
+	} else {
+		Json(ctx, &ModelAndView{
+			Code: http.StatusBadGateway,
+			Data: "服务器繁忙",
+		})
 	}
-	Json(ctx, &ModelAndView{
-		Code: http.StatusBadGateway,
-		Data: "服务器繁忙",
-	})
 }
 
 func (c *Core) Status(ctx *gin.Context) {

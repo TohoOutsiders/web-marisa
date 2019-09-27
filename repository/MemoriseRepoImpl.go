@@ -28,7 +28,7 @@ func (m *MemoriseRepo) AddMemory(data map[string]interface{}) bool {
 
 func (m *MemoriseRepo) FetchAllMemory() (memorise []models.Memorise) {
 	var db = m.Source.DB()
-	db.Find(&memorise)
+	db.Order("memoryId desc").Find(&memorise)
 	return
 }
 
