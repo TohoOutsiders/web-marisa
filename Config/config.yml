@@ -10,3 +10,10 @@ database:
   host: 127.0.0.1:3306
   name: marisa_memorise
   table-prefix: go_
+
+redis:
+  addr: 127.0.0.1:6379
+  pass: 111111
+  db: 1
+  timeout: 1000
+  expired-time: 3600

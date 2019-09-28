@@ -7,15 +7,20 @@
 package service
 
 import (
+	"log"
+	"server/cache"
 	"server/models"
 	"server/repository"
 	"server/segment"
 	"server/tools"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type MemoriseService struct {
-	Repo repository.IMemoriseRepo `inject:""`
+	Repo  repository.IMemoriseRepo `inject:""`
+	Redis cache.IRedis             `inject:""`
 }
 
 func (m *MemoriseService) Add(memory models.Memorise) map[string]interface{} {
@@ -102,7 +107,27 @@ func (m *MemoriseService) Forget(answer string) bool {
 }
 
 func (m *MemoriseService) Status() int {
+	var count int
+
+	KEY := "TOMO_MARISA_STATUS"
+	exp := 744 * time.Hour
+
+	redisTemplate := m.Redis.Client()
+	result, err := redisTemplate.Get(KEY).Result()
+	if err != nil {
+		log.Println("[Service] Status error: ", err)
+	}
+
+	if result != "" {
+		count, _ = strconv.Atoi(result)
+		return count
+	}
+
 	memorise := m.Repo.FetchAllMemory()
-	count := len(memorise)
+	count = len(memorise)
+	if err := redisTemplate.Set(KEY, count, exp).Err(); err != nil {
+		log.Println("[Service] Status Redis Set error: ", err)
+	}
+
 	return count
 }

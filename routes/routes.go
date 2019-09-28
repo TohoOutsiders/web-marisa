@@ -10,6 +10,7 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
 	"log"
+	"server/cache"
 	"server/controller"
 	"server/datasource"
 	"server/repository"
@@ -31,10 +32,18 @@ func Configure(app *gin.Engine) {
 		log.Fatal("db fatal: ", err)
 	}
 
+	// 连接缓存服务器
+	redis := cache.Redis{}
+	err = redis.Connect()
+	if err != nil {
+		log.Fatal("redis fatal: ", err)
+	}
+
 	// 依赖注入
 	var ninject inject.Graph
 	err = ninject.Provide(
 		&inject.Object{Value: &db},
+		&inject.Object{Value: &redis},
 		&inject.Object{Value: &repository.MemoriseRepo{}},
 		&inject.Object{Value: &service.MemoriseService{}},
 		&inject.Object{Value: &core},
