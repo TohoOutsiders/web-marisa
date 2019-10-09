@@ -16,5 +16,6 @@ require (
 	github.com/issue9/assert v1.3.3 // indirect
 	github.com/jinzhu/gorm v1.9.8
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
 	gopkg.in/yaml.v2 v2.2.2
 )

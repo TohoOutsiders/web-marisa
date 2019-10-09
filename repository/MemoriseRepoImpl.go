@@ -7,7 +7,7 @@
 package repository
 
 import (
-	"server/datasource"
+	"server/common/datasource"
 	"server/models"
 )
 

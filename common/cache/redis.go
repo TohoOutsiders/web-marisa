@@ -3,7 +3,7 @@ package cache
 import (
 	"github.com/go-redis/redis"
 	"log"
-	"server/setting"
+	"server/common/setting"
 	"time"
 )
 

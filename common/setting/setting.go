@@ -21,6 +21,7 @@ type Conf struct {
 	Server   Server   `yaml:"server"`
 	Database Database `yaml:"database"`
 	Redis    Redis    `yaml:"redis"`
+	RabbitMQ RabbitMQ `yaml:"rabbitmq"`
 }
 
 type Server struct {
@@ -44,6 +45,13 @@ type Redis struct {
 	DB          int           `yaml:"db"`
 	Timeout     time.Duration `yaml:"timeout"`
 	ExpiredTime int           `yaml:"expired-time"`
+}
+
+type RabbitMQ struct {
+	Addr string `yaml:"addr"`
+	Port int    `yaml:"port"`
+	User string `yaml:"user"`
+	Pass string `yaml:"pass"`
 }
 
 func init() {

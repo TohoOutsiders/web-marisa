@@ -10,9 +10,10 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
 	"log"
-	"server/cache"
+	"server/common/cache"
+	"server/common/datasource"
+	"server/common/rabbitmq"
 	"server/controller"
-	"server/datasource"
 	"server/repository"
 	"server/service"
 )
@@ -29,14 +30,21 @@ func Configure(app *gin.Engine) {
 	db := datasource.Db{}
 	err = db.Connect()
 	if err != nil {
-		log.Fatal("db fatal: ", err)
+		log.Fatal("db fatal:", err)
 	}
 
 	// 连接缓存服务器
 	redis := cache.Redis{}
 	err = redis.Connect()
 	if err != nil {
-		log.Fatal("redis fatal: ", err)
+		log.Fatal("redis fatal:", err)
+	}
+
+	// 连接rabbitmq
+	rabbit := rabbitmq.Mq{}
+	err = rabbit.Connect()
+	if err != nil {
+		log.Fatal("RabbitMQ fatal:", err)
 	}
 
 	// 依赖注入
@@ -44,6 +52,7 @@ func Configure(app *gin.Engine) {
 	err = ninject.Provide(
 		&inject.Object{Value: &db},
 		&inject.Object{Value: &redis},
+		&inject.Object{Value: &rabbit},
 		&inject.Object{Value: &repository.MemoriseRepo{}},
 		&inject.Object{Value: &service.MemoriseService{}},
 		&inject.Object{Value: &core},

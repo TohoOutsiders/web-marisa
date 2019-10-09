@@ -9,7 +9,7 @@ package main
 import (
 	"fmt"
 	"server/cmd"
-	"server/setting"
+	"server/common/setting"
 )
 
 func main() {

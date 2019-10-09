@@ -49,7 +49,7 @@ func (t *Tools) Join(arr []string, cut string) string {
 
 	var buffer bytes.Buffer
 	for k, v := range arr {
-		if k != len(arr) - 1 {
+		if k != len(arr)-1 {
 			buffer.WriteString(v)
 			buffer.WriteString(cut)
 		} else {

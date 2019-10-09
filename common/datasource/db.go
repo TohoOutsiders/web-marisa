@@ -11,7 +11,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
-	"server/setting"
+	"server/common/setting"
 )
 
 type Db struct {

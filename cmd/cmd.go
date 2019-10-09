@@ -8,8 +8,8 @@ package cmd
 
 import (
 	"github.com/gin-gonic/gin"
+	"server/common/segment"
 	"server/routes"
-	"server/segment"
 )
 
 var err error

@@ -8,11 +8,13 @@ package service
 
 import (
 	"log"
-	"server/cache"
+	"server/common/cache"
+	"server/common/constant"
+	"server/common/rabbitmq"
+	"server/common/segment"
+	"server/common/tools"
 	"server/models"
 	"server/repository"
-	"server/segment"
-	"server/tools"
 	"strconv"
 	"strings"
 	"time"
@@ -21,6 +23,7 @@ import (
 type MemoriseService struct {
 	Repo  repository.IMemoriseRepo `inject:""`
 	Redis cache.IRedis             `inject:""`
+	Amqp  rabbitmq.IMq             `inject:""`
 }
 
 func (m *MemoriseService) Add(memory models.Memorise) map[string]interface{} {
@@ -109,7 +112,7 @@ func (m *MemoriseService) Forget(answer string) bool {
 func (m *MemoriseService) Status() int {
 	var count int
 
-	KEY := "TOMO_MARISA_STATUS"
+	KEY := constant.NsMarisaStatus
 	exp := 744 * time.Hour
 
 	redisTemplate := m.Redis.Client()
