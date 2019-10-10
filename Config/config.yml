@@ -12,14 +12,14 @@ database:
   table-prefix: go_
 
 redis:
-  addr: reimu.ru:6379
-  pass: redis@753159
+  addr: 127.0.0.1
+  pass: 111111
   db: 1
   timeout: 1000
   expired-time: 3600
 
 rabbitmq:
-  addr: reimu.ru
+  addr: 127.0.0.1
   port: 5672
-  user: tomonori
-  pass: rabbitmq@753159
+  user: admin
+  pass: 111111

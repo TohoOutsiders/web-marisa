@@ -7,12 +7,13 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"server/common/cache"
 	"server/common/constant"
 	"server/common/rabbitmq"
 	"server/common/segment"
-	"server/common/tools"
 	"server/models"
 	"server/repository"
 	"strconv"
@@ -27,42 +28,54 @@ type MemoriseService struct {
 }
 
 func (m *MemoriseService) Add(memory models.Memorise) map[string]interface{} {
-	toPpl := segment.Init().Cut(memory.Keyword)
-	memorise := m.Repo.FetchAllMemory()
-	var real string
-
-	if len(memorise) == 0 {
-		real = tools.New().Join(toPpl, ",")
-		goto DATA
-	}
-
-	for _, v := range memorise {
-		ratio := 0
-		keywords := strings.Split(v.Keyword, ",")
-		for _, keyword := range keywords {
-			for _, ppl := range toPpl {
-				if keyword == ppl {
-					ratio++
-				}
-			}
-			if float32(ratio)/float32(len(keywords)) >= 0.6 {
-				keywords = append(keywords, toPpl...)
-				real = tools.New().Join(keywords, ",")
-				goto DATA
-			} else {
-				real = tools.New().Join(toPpl, ",")
-				goto DATA
-			}
-		}
-	}
-DATA:
-	data := make(map[string]interface{})
-	data["ip"] = memory.Ip
-	data["keyword"] = real
-	data["answer"] = memory.Answer
-	if m.Repo.AddMemory(data) {
+	body, err := json.Marshal(memory)
+	if err != nil {
+		data := make(map[string]interface{})
+		data["code"] = 500
+		data["error"] = fmt.Sprintf("json marshal error:%v", err)
 		return data
 	}
+	m.Amqp.Sender(
+		constant.ExchangeNsMemory,
+		constant.QueueNsMemoryAdd,
+		string(body),
+	)
+	//	toPpl := segment.Init().Cut(memory.Keyword)
+	//	memorise := m.Repo.FetchAllMemory()
+	//	var real string
+	//
+	//	if len(memorise) == 0 {
+	//		real = tools.New().Join(toPpl, ",")
+	//		goto DATA
+	//	}
+	//
+	//	for _, v := range memorise {
+	//		ratio := 0
+	//		keywords := strings.Split(v.Keyword, ",")
+	//		for _, keyword := range keywords {
+	//			for _, ppl := range toPpl {
+	//				if keyword == ppl {
+	//					ratio++
+	//				}
+	//			}
+	//			if float32(ratio)/float32(len(keywords)) >= 0.6 {
+	//				keywords = append(keywords, toPpl...)
+	//				real = tools.New().Join(keywords, ",")
+	//				goto DATA
+	//			} else {
+	//				real = tools.New().Join(toPpl, ",")
+	//				goto DATA
+	//			}
+	//		}
+	//	}
+	//DATA:
+	//	data := make(map[string]interface{})
+	//	data["ip"] = memory.Ip
+	//	data["keyword"] = real
+	//	data["answer"] = memory.Answer
+	//	if m.Repo.AddMemory(data) {
+	//		return data
+	//	}
 	return nil
 }
 
@@ -103,10 +116,11 @@ DATA:
 }
 
 func (m *MemoriseService) Forget(answer string) bool {
-	if m.Repo.DeleteMemoryByAnswer(answer) {
-		return true
-	}
-	return false
+	m.Amqp.Sender(constant.ExchangeNsMemory, constant.QueueNsMemoryDel, answer)
+	//if m.Repo.DeleteMemoryByAnswer(answer) {
+	//	return true
+	//}
+	return true
 }
 
 func (m *MemoriseService) Status() int {

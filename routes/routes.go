@@ -26,44 +26,42 @@ func Configure(app *gin.Engine) {
 	// 控制器注入声明
 	var core controller.Core
 
-	// 连接数据库
+	// 注入声明
 	db := datasource.Db{}
-	err = db.Connect()
-	if err != nil {
-		log.Fatal("db fatal:", err)
-	}
-
-	// 连接缓存服务器
 	redis := cache.Redis{}
-	err = redis.Connect()
-	if err != nil {
-		log.Fatal("redis fatal:", err)
-	}
-
-	// 连接rabbitmq
 	rabbit := rabbitmq.Mq{}
-	err = rabbit.Connect()
-	if err != nil {
-		log.Fatal("RabbitMQ fatal:", err)
-	}
 
-	// 依赖注入
-	var ninject inject.Graph
-	err = ninject.Provide(
+	// 注入
+	var injector inject.Graph
+	err = injector.Provide(
+		&inject.Object{Value: &core},
 		&inject.Object{Value: &db},
 		&inject.Object{Value: &redis},
 		&inject.Object{Value: &rabbit},
 		&inject.Object{Value: &repository.MemoriseRepo{}},
 		&inject.Object{Value: &service.MemoriseService{}},
-		&inject.Object{Value: &core},
 	)
-
 	if err != nil {
 		log.Fatal("inject fatal: ", err)
 	}
-
-	if err := ninject.Populate(); err != nil {
+	if err := injector.Populate(); err != nil {
 		log.Fatal("inject fatal: ", err)
+	}
+
+	//数据库连接
+	err = db.Connect()
+	if err != nil {
+		log.Fatal("db fatal:", err)
+	}
+	//连接缓存服务器
+	err = redis.Connect()
+	if err != nil {
+		log.Fatal("redis fatal:", err)
+	}
+	// 连接rabbitmq
+	err = rabbit.Connect()
+	if err != nil {
+		log.Fatal("RabbitMQ fatal:", err)
 	}
 
 	v1 := app.Group("/")

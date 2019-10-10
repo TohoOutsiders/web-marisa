@@ -2,7 +2,6 @@ package rabbitmq
 
 import (
 	"encoding/json"
-	"github.com/streadway/amqp"
 	"log"
 	"reflect"
 	"server/common/constant"
@@ -14,46 +13,34 @@ import (
 )
 
 type Listener struct {
-	Repo    repository.IMemoriseRepo `inject:""`
-	Channel *amqp.Channel
+	Repo repository.IMemoriseRepo
 }
 
 func (l *Listener) AutoFunc() {
-	typeOf := reflect.TypeOf(l)
 	valueOf := reflect.ValueOf(l)
-
 	numOfMethod := valueOf.NumMethod()
-	for i := 0; i < numOfMethod; i++ {
-		if typeOf.Method(i).Name == "AutoFunc" {
-			continue
-		}
+	for i := 1; i < numOfMethod; i++ {
 		valueOf.Method(i).Call(nil)
 	}
 }
 
 func (l *Listener) MemoryAddListener() {
-	message, err := l.Channel.Consume(
-		constant.QueueNsMemoryAdd,
-		"",
-		true, //消息确认机制（Acknowlege) 自动ACK：消息一旦被接收，消费者自动发送ACK
-		false,
-		false,
-		false,
-		nil,
-	)
-	if err != nil {
-		log.Fatal("[RabbitMQ Error] Listener -> MemoryAdd")
-	}
-
-	forever := make(chan bool)
-
-	go func() {
-		for msg := range message {
+	mq := &Mq{}
+	mq.BaseListener(
+		&MqConsumeConfig{
+			Queue:     constant.QueueNsMemoryAdd,
+			consumer:  "",
+			autoAck:   true,
+			exclusive: false,
+			noLocal:   false,
+			noWait:    false,
+			args:      nil,
+		},
+		func(msg []byte) {
 			var memory models.Memorise
-			err := json.Unmarshal(msg.Body, &memory)
+			err := json.Unmarshal(msg, &memory)
 			if err != nil {
 				log.Println("[RabbitMQ Error] Listener -> MemoryAdd:", err)
-				continue
 			}
 
 			toPpl := segment.Init().Cut(memory.Keyword)
@@ -92,9 +79,29 @@ func (l *Listener) MemoryAddListener() {
 			if l.Repo.AddMemory(data) {
 				log.Println("队列消息，魔理沙学习完成...", data)
 			}
-		}
-	}()
+		},
+	)
+	log.Println("[RabbitMQ] Listener -> MemoryAddListener")
+}
 
-	log.Println("[RabbitMQ] Listener -> MemoryAdd")
-	<-forever
+func (l *Listener) MemoryDelListener() {
+	mq := &Mq{}
+	mq.BaseListener(
+		&MqConsumeConfig{
+			Queue:     constant.QueueNsMemoryDel,
+			consumer:  "",
+			autoAck:   true,
+			exclusive: false,
+			noLocal:   false,
+			noWait:    false,
+			args:      nil,
+		},
+		func(msg []byte) {
+			if l.Repo.DeleteMemoryByAnswer(string(msg)) {
+				log.Println("队列消息，魔理沙忘记...", string(msg))
+			}
+			log.Println("【Error】队列消息，魔理沙忘记失败...", string(msg))
+		},
+	)
+	log.Println("[RabbitMQ] Listener -> MemoryDelListener")
 }
