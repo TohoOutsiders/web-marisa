@@ -16,10 +16,12 @@ type MqConfig struct {
 }
 
 func (m *MqConfig) AutoFunc() {
-	typeOf := reflect.TypeOf(m)
-	valueOf := reflect.ValueOf(m)
+	var (
+		typeOf      = reflect.TypeOf(m)
+		valueOf     = reflect.ValueOf(m)
+		numOfMethod = valueOf.NumMethod()
+	)
 
-	numOfMethod := valueOf.NumMethod()
 	for i := 0; i < numOfMethod; i++ {
 		if typeOf.Method(i).Name == "AutoFunc" {
 			continue

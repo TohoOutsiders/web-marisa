@@ -19,16 +19,14 @@ type Db struct {
 }
 
 func (d *Db) Connect() error {
-	var (
-		dbType, dbName, user, pwd, host string
-	)
-
 	conf := setting.Config.Database
-	dbType = conf.Type
-	dbName = conf.Name
-	user = conf.User
-	pwd = conf.Password
-	host = conf.Host
+	var (
+		dbType = conf.Type
+		dbName = conf.Name
+		user   = conf.User
+		pwd    = conf.Password
+		host   = conf.Host
+	)
 
 	db, err := gorm.Open(dbType, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", user, pwd, host, dbName))
 	if err != nil {

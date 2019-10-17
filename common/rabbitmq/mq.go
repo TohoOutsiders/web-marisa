@@ -58,10 +58,11 @@ func (m *Mq) Connect() error {
 	senderChannel = senderCh
 	log.Println("[RabbitMQ] Sender Channel -> []")
 
-	mqConcif := &MqConfig{ch}
-	mqConcif.AutoFunc()
-
-	listener := &Listener{m.Repo}
+	var (
+		mqConfig = &MqConfig{ch}
+		listener = &Listener{m.Repo}
+	)
+	mqConfig.AutoFunc()
 	listener.AutoFunc()
 
 	return nil
@@ -72,6 +73,7 @@ func (m *Mq) BaseListener(consumeConfig *MqConsumeConfig, fun func([]byte)) {
 }
 
 func (m *Mq) Sender(exchange, routingkey, data string) {
+	body := []byte(data)
 	err := senderChannel.Publish(
 		exchange,
 		routingkey,
@@ -79,7 +81,7 @@ func (m *Mq) Sender(exchange, routingkey, data string) {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        []byte(data),
+			Body:        body,
 		},
 	)
 	if err != nil {
@@ -89,6 +91,7 @@ func (m *Mq) Sender(exchange, routingkey, data string) {
 }
 
 func (m *Mq) Delay(exchange, routingKey, data string, delayTime int) {
+	body := []byte(data)
 	err := senderChannel.Publish(
 		exchange,
 		routingKey,
@@ -99,7 +102,7 @@ func (m *Mq) Delay(exchange, routingKey, data string, delayTime int) {
 				"x-delay": delayTime,
 			},
 			ContentType: "text/plain",
-			Body:        []byte(data),
+			Body:        body,
 		},
 	)
 	if err != nil {

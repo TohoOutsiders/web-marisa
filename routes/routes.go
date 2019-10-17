@@ -22,14 +22,19 @@ func Configure(app *gin.Engine) {
 	var err error
 
 	// 实例化控制器
-	index := &controller.Index{}
-	// 控制器注入声明
-	var core controller.Core
+	var (
+		index = &controller.Index{}
+
+		// 控制器注入声明
+		core controller.Core
+	)
 
 	// 注入声明
-	db := datasource.Db{}
-	redis := cache.Redis{}
-	rabbit := rabbitmq.Mq{}
+	var (
+		db     = datasource.Db{}
+		redis  = cache.Redis{}
+		rabbit = rabbitmq.Mq{}
+	)
 
 	// 注入
 	var injector inject.Graph

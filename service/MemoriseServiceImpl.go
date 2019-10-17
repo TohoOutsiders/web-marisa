@@ -40,42 +40,6 @@ func (m *MemoriseService) Add(memory models.Memorise) map[string]interface{} {
 		constant.QueueNsMemoryAdd,
 		string(body),
 	)
-	//	toPpl := segment.Init().Cut(memory.Keyword)
-	//	memorise := m.Repo.FetchAllMemory()
-	//	var real string
-	//
-	//	if len(memorise) == 0 {
-	//		real = tools.New().Join(toPpl, ",")
-	//		goto DATA
-	//	}
-	//
-	//	for _, v := range memorise {
-	//		ratio := 0
-	//		keywords := strings.Split(v.Keyword, ",")
-	//		for _, keyword := range keywords {
-	//			for _, ppl := range toPpl {
-	//				if keyword == ppl {
-	//					ratio++
-	//				}
-	//			}
-	//			if float32(ratio)/float32(len(keywords)) >= 0.6 {
-	//				keywords = append(keywords, toPpl...)
-	//				real = tools.New().Join(keywords, ",")
-	//				goto DATA
-	//			} else {
-	//				real = tools.New().Join(toPpl, ",")
-	//				goto DATA
-	//			}
-	//		}
-	//	}
-	//DATA:
-	//	data := make(map[string]interface{})
-	//	data["ip"] = memory.Ip
-	//	data["keyword"] = real
-	//	data["answer"] = memory.Answer
-	//	if m.Repo.AddMemory(data) {
-	//		return data
-	//	}
 	return nil
 }
 
@@ -124,12 +88,14 @@ func (m *MemoriseService) Forget(answer string) bool {
 }
 
 func (m *MemoriseService) Status() int {
-	var count int
+	var (
+		count int
+		KEY   = constant.NsMarisaStatus
+		exp   = 744 * time.Hour
 
-	KEY := constant.NsMarisaStatus
-	exp := 744 * time.Hour
+		redisTemplate = m.Redis.Client()
+	)
 
-	redisTemplate := m.Redis.Client()
 	result, err := redisTemplate.Get(KEY).Result()
 	if err != nil {
 		log.Println("[Service] Status error: ", err)
