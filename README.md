@@ -2,6 +2,7 @@
 🍄 白丝魔理沙网页版
 
 ### Status
+(2020.Jan.01 will, will be stop)
 🔋 is running
 
 ### Web(Router) Framework
