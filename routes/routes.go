@@ -31,9 +31,9 @@ func Configure(app *gin.Engine) {
 
 	// 注入声明
 	var (
-		db     = datasource.Db{}
-		redis  = cache.Redis{}
-		rabbit = rabbitmq.Mq{}
+		db = datasource.Db{}
+		//redis  = cache.Redis{}
+		//rabbit = rabbitmq.Mq{}
 	)
 
 	// 注入
@@ -41,8 +41,8 @@ func Configure(app *gin.Engine) {
 	err = injector.Provide(
 		&inject.Object{Value: &core},
 		&inject.Object{Value: &db},
-		&inject.Object{Value: &redis},
-		&inject.Object{Value: &rabbit},
+		//&inject.Object{Value: &redis},
+		//&inject.Object{Value: &rabbit},
 		&inject.Object{Value: &repository.MemoriseRepo{}},
 		&inject.Object{Value: &service.MemoriseService{}},
 	)
@@ -59,15 +59,15 @@ func Configure(app *gin.Engine) {
 		log.Fatal("db fatal:", err)
 	}
 	//连接缓存服务器
-	err = redis.Connect()
-	if err != nil {
-		log.Fatal("redis fatal:", err)
-	}
+	//err = redis.Connect()
+	//if err != nil {
+	//	log.Fatal("redis fatal:", err)
+	//}
 	// 连接rabbitmq
-	err = rabbit.Connect()
-	if err != nil {
-		log.Fatal("RabbitMQ fatal:", err)
-	}
+	//err = rabbit.Connect()
+	//if err != nil {
+	//	log.Fatal("RabbitMQ fatal:", err)
+	//}
 
 	v1 := app.Group("/")
 	{
