@@ -1,0 +1,22 @@
+app:
+  name: marisa
+  ip: 127.0.0.1
+  port: 3000
+  mode: debug # release
+
+database:
+  user: root
+  password: 123456
+  host: 127.0.0.1:3306
+  db: fuck
+  maxIdleConns: 10
+  maxOpenConns: 100
+  debug: true
+
+log:
+  filename: log/marisa.log
+  maxSize: 500
+  maxBackups: 3
+  maxAge: 3
+  level: "debug"
+  stdout: false
