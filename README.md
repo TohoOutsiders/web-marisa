@@ -15,6 +15,3 @@ please checkout iris branch, then got it.
 ### Contact me
 - E-Mail:
     - gutrse3321@live.com
-    - hakurei@reimu.ru
-- QQ: 464189307
-- QQ Group: 795711415
