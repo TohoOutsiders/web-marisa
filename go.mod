@@ -9,6 +9,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/viper v1.7.0
 	go.uber.org/zap v1.10.0
-	golang.org/x/net v0.0.0-20200528225125-3c3fba18258b // indirect
+	golang.org/x/net v0.7.0 // indirect
 	google.golang.org/protobuf v1.24.0 // indirect
 )
